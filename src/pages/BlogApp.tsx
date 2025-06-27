@@ -1,6 +1,8 @@
 import FormBuilder from "@/components/FormBuilder/FormBuilder";
 import Layout from "@/components/Layout";
 import MarkdownEditor from "@/components/MarkdownEditor/MarkdownEditor";
+import Pagination from "@/components/Pagination";
+import SearchBar from "@/components/SearchBar";
 import { useBlog } from "@/context/BlogContext";
 import type { SubmitProps } from "@/interface";
 import { postFormConfig } from "@/utils";
@@ -8,7 +10,21 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
 const BlogApp = () => {
-  const { posts, addPost, updatePost, deletePost, fetchPosts } = useBlog();
+  const {
+    loader,
+    posts,
+    allPosts,
+    addPost,
+    updatePost,
+    deletePost,
+    fetchPosts,
+    searchTerm,
+    setSearchTerm,
+    currentPage,
+    setCurrentPage,
+    postsPerPage,
+    totalPages,
+  } = useBlog();
   const [editMode, setEditMode] = useState(false);
   const [showMarkdownEditor, setShowMarkdownEditor] = useState(false);
   const { id } = useParams();
@@ -27,7 +43,13 @@ const BlogApp = () => {
   const handleGoBack = () => {
     setEditMode(false);
     setShowMarkdownEditor(false);
+    setCurrentPage(id === "new" ? 1 : currentPage);
     navigate("/blog");
+  };
+
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+    setCurrentPage(1);
   };
 
   const handleSubmit = (data: { title: string; body: string }) => {
@@ -42,12 +64,23 @@ const BlogApp = () => {
   const handleDelete = (postId: string) => {
     if (window.confirm("Are you sure you want to delete this post?")) {
       deletePost(postId);
+      setTimeout(() => {
+        const remainingPosts = allPosts.length - 1;
+        const lastPage = Math.ceil(remainingPosts / postsPerPage);
+        if (currentPage > lastPage) {
+          setCurrentPage(1);
+        }
+      }, 0);
     }
   };
 
   const currentPost = editMode
-    ? posts.find((post) => Number(post.id) === Number(id))
+    ? allPosts.find((post) => Number(post.id) === Number(id))
     : null;
+
+  if (loader) {
+    return <div className="p-8 text-center">Loading...</div>;
+  }
 
   return (
     <React.Fragment>
@@ -67,43 +100,68 @@ const BlogApp = () => {
 
             <div className="space-y-6">
               {!editMode && !id && (
-                <>
-                  <div className="bg-white shadow overflow-hidden sm:rounded-md">
-                    <ul className="divide-y divide-gray-200">
-                      {posts.map((post) => (
-                        <li key={post.id}>
-                          <div className="px-4 py-4 sm:px-6">
-                            <div className="flex items-center justify-between">
-                              <Link
-                                to={`/blog/${post.id}`}
-                                className="text-lg font-medium text-blue-600 hover:text-blue-500 truncate"
-                              >
-                                {post.title}
-                              </Link>
-                              <div className="ml-2 flex-shrink-0 flex space-x-2">
-                                <Link
-                                  to={`/blog/edit/${post.id}`}
-                                  className="px-2 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50"
-                                >
-                                  Edit
-                                </Link>
-                                <button
-                                  onClick={() => handleDelete(post.id)}
-                                  className="px-2 py-1 border border-gray-300 rounded-md text-sm font-medium text-red-600 hover:bg-red-50"
-                                >
-                                  Delete
-                                </button>
-                              </div>
-                            </div>
-                            <div className="mt-2 text-sm text-gray-500 line-clamp-2">
-                              {post.body}
-                            </div>
-                          </div>
-                        </li>
-                      ))}
-                    </ul>
+                <div>
+                  <div className="mb-4">
+                    <SearchBar
+                      value={searchTerm}
+                      onChange={handleSearch}
+                      placeholder="Search posts..."
+                      className="pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
                   </div>
-                </>
+                  <div className="bg-white shadow overflow-hidden sm:rounded-md">
+                    {posts.length === 0 ? (
+                      <div className="p-4 text-center text-gray-500">
+                        {searchTerm
+                          ? "No matching posts found"
+                          : "No posts available"}
+                      </div>
+                    ) : (
+                      <div>
+                        <ul className="divide-y divide-gray-200">
+                          {posts.map((post) => (
+                            <li key={post.id}>
+                              <div className="px-4 py-4 sm:px-6">
+                                <div className="flex items-center justify-between">
+                                  <Link
+                                    to={`/blog/${post.id}`}
+                                    className="text-lg font-medium text-blue-600 hover:text-blue-500 truncate"
+                                  >
+                                    {post.title}
+                                  </Link>
+                                  <div className="ml-2 flex-shrink-0 flex space-x-2">
+                                    <Link
+                                      to={`/blog/edit/${post.id}`}
+                                      className="px-2 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50"
+                                    >
+                                      Edit
+                                    </Link>
+                                    <button
+                                      onClick={() => handleDelete(post.id)}
+                                      className="px-2 py-1 border border-gray-300 rounded-md text-sm font-medium text-red-600 hover:bg-red-50"
+                                    >
+                                      Delete
+                                    </button>
+                                  </div>
+                                </div>
+                                <div className="mt-2 text-sm text-gray-500 line-clamp-2">
+                                  {post.body}
+                                </div>
+                              </div>
+                            </li>
+                          ))}
+                        </ul>
+                        <Pagination
+                          currentPage={currentPage}
+                          totalPages={totalPages}
+                          pageSize={postsPerPage}
+                          sortedDataLength={allPosts.length}
+                          setCurrentPage={setCurrentPage}
+                        />
+                      </div>
+                    )}
+                  </div>
+                </div>
               )}
 
               {(editMode || id === "new") && (

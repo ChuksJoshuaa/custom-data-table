@@ -1,3 +1,5 @@
+import type { Dispatch, SetStateAction } from "react";
+
 // types.ts
 export interface User {
   id: number;
@@ -125,14 +127,21 @@ export interface FormBuilderProps {
 
 export interface BlogContextType {
   posts: Post[];
+  allPosts: Post[];
   fetchPosts: () => Promise<void>;
   addPost: (post: Omit<Post, "id">) => Promise<void>;
   updatePost: (id: string, post: Omit<Post, "id">) => Promise<void>;
   deletePost: (id: string) => Promise<void>;
   sidebarOpen: boolean;
-  setSidebarOpen: (open: boolean) => void;
+  setSidebarOpen: Dispatch<SetStateAction<boolean>>;
   loader: boolean;
-  setLoader: (loading: boolean) => void;
+  setLoader: Dispatch<SetStateAction<boolean>>;
+  searchTerm: string;
+  setSearchTerm: Dispatch<SetStateAction<string>>;
+  currentPage: number;
+  setCurrentPage: Dispatch<SetStateAction<number>>;
+  postsPerPage: number;
+  totalPages: number;
 }
 
 export interface MarkdownEditorProps {
