@@ -1,69 +1,106 @@
-# React + TypeScript + Vite
+# Custom Data Table
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+<img src="https://res.cloudinary.com/chuksmbanaso/image/upload/v1751027991/Screenshot_2025-06-27_at_13.38.26_pf0ogr.png" title="Image" alt="image">
 
-Currently, two official plugins are available:
+This project demonstrates a React (TypeScript) application with three main tasks:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+1. Feature-rich data table
+2. Custom form builder
+3. Mini blog app
 
-## Expanding the ESLint configuration
+## Technologies Used
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- React 19
+- TypeScript
+- Javascript
+- Tailwind CSS
+- React Router
+- React Markdown (for markdown editor)
+- Axios (for API calls)
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Features
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+### Task 1: Data Table
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- Fetches user data from dummyjson.com
+- Supports sorting by columns
+- Search/filter functionality
+- Pagination with various controls
+- Row selection and bulk delete action
+- Responsive design
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Task 2: Form Builder
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- Dynamically renders form fields based on configuration
+- Supports text, email, select, and textarea inputs
+- Field validation (required, pattern matching)
+- Conditional field rendering
+- Displays submitted data
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+### Task 3: Mini Blog App
+
+- CRUD operations for blog posts
+- Routing with React Router
+- Context API for state management
+- Markdown editor with live preview
+- Optimistic UI updates
+
+## Prerequisites
+
+Before you begin, ensure you have the following installed:
+
+- **Node.js**: Version 20.15.1 or higher
+- **npm**: Version 10.7.0 or higher
+
+## Installation
+
+To install and run project locally, follow these steps:
+
+1. **Clone the repository**:
+
+   ```bash
+   git clone https://github.com/ChuksJoshuaa/custom-data-table.git
+   ```
+
+2. **Install the repository**:
+
+   ```bash
+   npm install --force
+   ```
+
+3. **Build the repository with docker**:
+   ```bash
+   docker-compose up --build
+   ```
+
+## Usage
+
+To start the application and begin using project, follow these steps:
+
+1. **Start the application**:
+   ```bash
+   npm run dev
+   ```
+2. **Open your web browser** and navigate to
+   ```bash
+   http://localhost:5173
+   ```
+
+## Contributing
+
+Contributions are welcome! To contribute to project, follow these steps:
+
+1. **Fork the repository**.
+2. **Create a new branch**:
+   ```bash
+   git checkout -b feature/your-feature-name
+   ```
+3. **Make your changes and commit them**:
+   ```bash
+   git commit -m 'Add some feature'
+   ```
+4. **Push to the branch**:
+   ```bash
+   git push origin feature/your-feature-name
+   ```
+5. **Submit a pull request**.
