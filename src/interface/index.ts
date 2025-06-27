@@ -120,6 +120,7 @@ export type SubmitProps = {
 export interface FormBuilderProps {
   config: FormField[];
   onSubmit: (data: SubmitProps["formData"]) => void;
+  initialData?: Post;
 }
 
 export interface BlogContextType {

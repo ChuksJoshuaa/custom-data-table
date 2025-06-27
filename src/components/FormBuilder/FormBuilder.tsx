@@ -1,9 +1,9 @@
 import type { FormBuilderProps } from "@/interface";
 import useFormBuilder from "@/components/FormBuilder/useFormBuilder";
 
-const FormBuilder = ({ config, onSubmit }: FormBuilderProps) => {
+const FormBuilder = ({ config, onSubmit, initialData }: FormBuilderProps) => {
   const { formData, errors, handleChange, handleSubmit, shouldShowField } =
-    useFormBuilder({ config, onSubmit });
+    useFormBuilder({ config, onSubmit, initialData });
 
   return (
     <form

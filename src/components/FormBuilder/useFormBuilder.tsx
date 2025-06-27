@@ -1,11 +1,20 @@
 import type { FormBuilderProps, FormField, SubmitProps } from "@/interface";
 import { useState } from "react";
 
-const useFormBuilder = ({ config, onSubmit }: FormBuilderProps) => {
+const useFormBuilder = ({
+  config,
+  onSubmit,
+  initialData: initialEdittedData,
+}: FormBuilderProps) => {
   const [formData, setFormData] = useState<SubmitProps["formData"]>(() => {
-    const initialData: SubmitProps["formData"] = {};
+    const initialData: SubmitProps["formData"] = initialEdittedData
+      ? { ...initialEdittedData }
+      : {};
     config.forEach((field) => {
-      if (field.defaultValue !== undefined) {
+      if (
+        field.defaultValue !== undefined &&
+        initialData[field.name] === undefined
+      ) {
         initialData[field.name] = field.defaultValue;
       }
     });

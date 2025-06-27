@@ -24,13 +24,19 @@ const BlogApp = () => {
     fetchPosts();
   }, [fetchPosts]);
 
+  const handleGoBack = () => {
+    setEditMode(false);
+    setShowMarkdownEditor(false);
+    navigate("/blog");
+  };
+
   const handleSubmit = (data: { title: string; body: string }) => {
-    if (editMode && id) {
-      updatePost(id, data);
+    if (editMode && id !== "new") {
+      updatePost(id as string, data);
     } else {
       addPost(data);
     }
-    navigate("/blog");
+    handleGoBack();
   };
 
   const handleDelete = (postId: string) => {
@@ -39,7 +45,9 @@ const BlogApp = () => {
     }
   };
 
-  const currentPost = editMode ? posts.find((post) => post.id === id) : null;
+  const currentPost = editMode
+    ? posts.find((post) => Number(post.id) === Number(id))
+    : null;
 
   return (
     <React.Fragment>
@@ -103,13 +111,24 @@ const BlogApp = () => {
                     <h2 className="text-xl font-semibold text-gray-900">
                       {editMode ? "Edit Post" : "Create New Post"}
                     </h2>
-                    <button
-                      type="button"
-                      onClick={() => setShowMarkdownEditor(!showMarkdownEditor)}
-                      className="inline-flex items-center px-3 py-1.5 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                    >
-                      {showMarkdownEditor ? "Hide Editor" : "Markdown Editor"}
-                    </button>
+                    <div className="tw-flex tw-justify-start tw-items-center tw-gap-2">
+                      <button
+                        type="button"
+                        onClick={handleGoBack}
+                        className="inline-flex items-center mr-2 px-4 py-1.5 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                      >
+                        Go Back
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setShowMarkdownEditor(!showMarkdownEditor)
+                        }
+                        className="inline-flex items-center px-3 py-1.5 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                      >
+                        {showMarkdownEditor ? "Hide Editor" : "Markdown Editor"}
+                      </button>
+                    </div>
                   </div>
 
                   {showMarkdownEditor ? (
@@ -126,7 +145,7 @@ const BlogApp = () => {
                       onSubmit={
                         handleSubmit as (data: SubmitProps["formData"]) => void
                       }
-                      //   initialData={currentPost || undefined}
+                      initialData={currentPost || undefined}
                     />
                   )}
                 </div>

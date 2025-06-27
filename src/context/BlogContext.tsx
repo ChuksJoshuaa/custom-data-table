@@ -22,7 +22,6 @@ export const BlogProvider = ({ children }: ChildrenProps) => {
 
   const addPost = useCallback(async (post: Omit<Post, "id">) => {
     try {
-      // In a real app, this would call your API
       const newPost = { ...post, id: Date.now().toString() };
       setPosts((prev) => [newPost, ...prev]);
     } catch (error) {
@@ -33,7 +32,6 @@ export const BlogProvider = ({ children }: ChildrenProps) => {
 
   const updatePost = useCallback(async (id: string, post: Omit<Post, "id">) => {
     try {
-      // In a real app, this would call your API
       setPosts((prev) =>
         prev.map((p) => (p.id === id ? { ...p, ...post } : p))
       );
@@ -45,7 +43,6 @@ export const BlogProvider = ({ children }: ChildrenProps) => {
 
   const deletePost = useCallback(async (id: string) => {
     try {
-      // In a real app, this would call your API
       setPosts((prev) => prev.filter((post) => post.id !== id));
     } catch (error) {
       console.error("Failed to delete post:", error);

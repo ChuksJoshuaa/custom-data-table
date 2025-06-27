@@ -19,7 +19,6 @@ const TabRoutes = () => {
         <Route path="/data-table" element={<DataTableView />} />
         <Route path="/form-builder" element={<FormBuilderView />} />
         <Route path="/blog" element={<BlogApp />} />
-        <Route path="/blog/new" element={<BlogApp />} />
         <Route path="/blog/:id" element={<BlogApp />} />
         <Route path="/blog/edit/:id" element={<BlogApp />} />
         <Route path="*" element={<DataTableView />} />
