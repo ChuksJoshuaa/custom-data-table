@@ -74,6 +74,7 @@ export interface DataTableProps {
   data: User[];
   columns: Column[];
   pageSize?: number;
+  onDeleteSuccess?: (deletedIds: number[]) => void;
 }
 
 export interface Column {

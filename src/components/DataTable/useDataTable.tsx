@@ -1,7 +1,12 @@
 import type { DataTableProps, User } from "@/interface/index";
 import { useMemo, useState } from "react";
 
-const useDataTable = ({ data, columns, pageSize = 10 }: DataTableProps) => {
+const useDataTable = ({
+  data,
+  columns,
+  pageSize = 10,
+  onDeleteSuccess,
+}: DataTableProps) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [sortConfig, setSortConfig] = useState<{
     key: string;
@@ -9,16 +14,17 @@ const useDataTable = ({ data, columns, pageSize = 10 }: DataTableProps) => {
   } | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedRows, setSelectedRows] = useState<Set<number>>(new Set());
+  const [tableData, setTableData] = useState<User[]>(data);
 
   const filteredData = useMemo(() => {
-    return data.filter((item) =>
+    return tableData.filter((item) =>
       columns.some((column) =>
         String(item[column.key as keyof User])
           .toLowerCase()
           .includes(searchTerm.toLowerCase())
       )
     );
-  }, [data, searchTerm, columns]);
+  }, [tableData, searchTerm, columns]);
 
   const sortedData = useMemo(() => {
     if (!sortConfig) return filteredData;
@@ -65,9 +71,19 @@ const useDataTable = ({ data, columns, pageSize = 10 }: DataTableProps) => {
   };
 
   const handleBulkDelete = () => {
-    console.log("Deleting rows:", Array.from(selectedRows));
+    const deletedIds = Array.from(selectedRows);
+    if (onDeleteSuccess) {
+      onDeleteSuccess(deletedIds);
+    }
+    const newData = tableData.filter((item) => !selectedRows.has(item.id));
+    setTableData(newData);
     setSelectedRows(new Set());
+
+    if (paginatedData.length === selectedRows.size && currentPage > 1) {
+      setCurrentPage(1);
+    }
   };
+
   return {
     currentPage,
     setCurrentPage,

@@ -1,3 +1,4 @@
+import { FETCH_POSTS_URL } from "@/constants";
 import type { BlogContextType, ChildrenProps, Post } from "@/interface";
 import {
   createContext,
@@ -34,9 +35,7 @@ export const BlogProvider = ({ children }: ChildrenProps) => {
   const fetchPosts = useCallback(async () => {
     setLoader(true);
     try {
-      const response = await fetch(
-        "https://jsonplaceholder.typicode.com/posts"
-      );
+      const response = await fetch(FETCH_POSTS_URL);
       const data = await response.json();
       setAllPosts(data.slice(0, 50));
       setTimeout(() => {

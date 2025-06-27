@@ -1,5 +1,6 @@
 import DataTable from "@/components/DataTable/DataTable";
 import Layout from "@/components/Layout";
+import { FETCH_USERS_URL } from "@/constants";
 import type { User } from "@/interface";
 import { columns } from "@/utils";
 import { useEffect, useState } from "react";
@@ -12,7 +13,7 @@ const DataTableView = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await fetch("https://dummyjson.com/users");
+        const response = await fetch(FETCH_USERS_URL);
         const data = await response.json();
         setUsers(data.users);
         setLoading(false);
@@ -24,6 +25,12 @@ const DataTableView = () => {
 
     fetchUsers();
   }, []);
+
+  const handleDeleteSuccess = (deletedIds: number[]) => {
+    setUsers((prevUsers) =>
+      prevUsers.filter((user) => !deletedIds.includes(user.id))
+    );
+  };
 
   if (loading) {
     return <div className="p-8 text-center">Loading...</div>;
@@ -37,7 +44,12 @@ const DataTableView = () => {
     <Layout>
       <div className="px-4 sm:px-0 py-1 w-full">
         <h1 className="text-2xl font-bold mb-6">User Data Table</h1>
-        <DataTable data={users} columns={columns} pageSize={10} />
+        <DataTable
+          data={users}
+          columns={columns}
+          pageSize={10}
+          onDeleteSuccess={handleDeleteSuccess}
+        />
       </div>
     </Layout>
   );

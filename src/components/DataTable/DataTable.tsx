@@ -1,9 +1,15 @@
+// DataTable.tsx
 import useDataTable from "@/components/DataTable/useDataTable";
 import Pagination from "@/components/Pagination";
 import SearchBar from "@/components/SearchBar";
 import type { DataTableProps, User } from "@/interface";
 
-const DataTable = ({ data, columns, pageSize = 10 }: DataTableProps) => {
+const DataTable = ({
+  data,
+  columns,
+  pageSize = 10,
+  onDeleteSuccess,
+}: DataTableProps) => {
   const {
     currentPage,
     setCurrentPage,
@@ -22,6 +28,7 @@ const DataTable = ({ data, columns, pageSize = 10 }: DataTableProps) => {
     data,
     columns,
     pageSize,
+    onDeleteSuccess,
   });
 
   return (
@@ -129,6 +136,7 @@ const DataTable = ({ data, columns, pageSize = 10 }: DataTableProps) => {
             ))}
           </tr>
         </thead>
+
         <tbody className="bg-white divide-y divide-gray-200">
           {paginatedData.length > 0 ? (
             paginatedData.map((item) => (
