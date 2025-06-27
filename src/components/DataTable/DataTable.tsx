@@ -1,4 +1,3 @@
-// DataTable.tsx
 import useDataTable from "@/components/DataTable/useDataTable";
 import Pagination from "@/components/Pagination";
 import SearchBar from "@/components/SearchBar";
