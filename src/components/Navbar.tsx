@@ -29,7 +29,7 @@ const Navbar = () => {
         </div>
 
         <div
-          className={`mt-4 cursor-pointer ${!sidebarOpen ? "hidden" : "block"}`}
+          className={`cursor-pointer ${!sidebarOpen ? "hidden" : "block"}`}
           onClick={() => setSidebarOpen(true)}
         >
           <img src={toggleSvg} alt="search" className="h-8 w-8 text-[#222]" />
