@@ -33,7 +33,7 @@ export const BlogProvider = ({ children }: ChildrenProps) => {
   const updatePost = useCallback(async (id: string, post: Omit<Post, "id">) => {
     try {
       setPosts((prev) =>
-        prev.map((p) => (p.id === id ? { ...p, ...post } : p))
+        prev.map((p) => (String(p.id) === String(id) ? { ...p, ...post } : p))
       );
     } catch (error) {
       console.error("Failed to update post:", error);
