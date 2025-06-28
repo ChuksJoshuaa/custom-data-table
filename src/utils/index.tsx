@@ -14,8 +14,8 @@ export const formConfig: FormField[] = [
     label: "Phone Number",
     name: "phone",
     validation: {
-      pattern: "^[0-9]{10}$",
-      message: "Please enter a valid 10-digit phone number",
+      pattern: "^\\d{11}$",
+      message: "Please enter a valid 11-digit phone number",
     },
     conditional: {
       field: "gender",

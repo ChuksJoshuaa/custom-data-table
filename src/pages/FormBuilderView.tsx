@@ -5,10 +5,9 @@ import { formConfig as formConfigData } from "@/utils";
 import React, { useState } from "react";
 
 const FormBuilderView: React.FC = () => {
-  const [submittedData, setSubmittedData] = useState<Record<
-    string,
-    any
-  > | null>(null);
+  const [submittedData, setSubmittedData] = useState<
+    SubmitProps["formData"] | null
+  >(null);
 
   const handleSubmit = (data: SubmitProps["formData"]) => {
     setSubmittedData(data);

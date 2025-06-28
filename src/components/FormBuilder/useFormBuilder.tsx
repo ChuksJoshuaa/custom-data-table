@@ -29,7 +29,20 @@ const useFormBuilder = ({
     >
   ) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    const newFormData = { ...formData, [name]: value };
+
+    const dependentFields = config.filter(
+      (field) => field.conditional?.field === name
+    );
+
+    dependentFields.forEach((field) => {
+      if (value !== field.conditional?.value) {
+        newFormData[field.name] = "";
+      }
+    });
+
+    setFormData(newFormData);
+
     if (errors[name]) {
       setErrors((prev) => {
         const newErrors = { ...prev };
@@ -57,13 +70,11 @@ const useFormBuilder = ({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const newErrors: Record<string, string> = {};
+    const filteredData: SubmitProps["formData"] = {};
 
     config.forEach((field) => {
-      if (field.conditional) {
-        const dependentFieldValue = formData[field.conditional.field];
-        if (dependentFieldValue !== field.conditional.value) {
-          return;
-        }
+      if (field.conditional && !shouldShowField(field)) {
+        return;
       }
 
       const error = validateField(field, formData[field.name]);
@@ -77,7 +88,14 @@ const useFormBuilder = ({
       return;
     }
 
-    onSubmit(formData);
+    Object.keys(formData).forEach((key) => {
+      const fieldConfig = config.find((f) => f.name === key);
+      if (!fieldConfig?.conditional || shouldShowField(fieldConfig)) {
+        filteredData[key] = formData[key];
+      }
+    });
+
+    onSubmit(filteredData);
   };
 
   const shouldShowField = (field: FormField): boolean => {
