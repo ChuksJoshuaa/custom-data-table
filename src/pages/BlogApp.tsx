@@ -174,7 +174,7 @@ const BlogApp = () => {
                       <button
                         type="button"
                         onClick={handleGoBack}
-                        className="inline-flex items-center mr-2 px-4 py-1.5 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                        className="inline-flex items-center mb-2 mr-2 px-4 py-1.5 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                       >
                         Go Back
                       </button>
